@@ -1,0 +1,7 @@
+:root {
+
+  /* Frame */
+  --frame_width: 1rem;
+  --frame_width_small: 0.5rem;
+  --frame_margin-bottom: 0rem;
+}

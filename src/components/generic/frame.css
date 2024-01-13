@@ -1,0 +1,57 @@
+
+/* frame outer */
+.frame_outer {
+  display: inline-block;
+  border-radius: calc(var(--frame_width) * 0.5);
+  margin: 0 0.2rem;
+  padding: calc(var(--frame_width) * 0.5);
+  border: 1px solid #33333350;
+  box-shadow:
+    inset #000000b0 calc(var(--frame_width) *  2) calc(var(--frame_width) *  2) calc(var(--frame_width) * 4) calc(var(--frame_width) * -4),
+    inset #ffffffb0 calc(var(--frame_width) * -2) calc(var(--frame_width) * -2) calc(var(--frame_width) * 4) calc(var(--frame_width) * -4);
+}
+
+/* frame inner */
+.frame_outer > .frame_inner {
+  position: relative;
+  height: 100%;
+  width: 100%;
+  border: 1px solid #33333350;
+  border-width: 1px;
+  padding: calc(1rem);
+  background-color: var(--background);
+  border-radius: calc(var(--width) * 0.5);
+  box-shadow:
+    inset #000000b0 calc(var(--frame_width) * -2) calc(var(--frame_width) * -2) calc(var(--frame_width) * 4) calc(var(--frame_width) * -4),
+    inset #ffffffb0 calc(var(--frame_width) *  2) calc(var(--frame_width) *  2) calc(var(--frame_width) * 4) calc(var(--frame_width) * -4);
+}
+.frame_outer:hover > .frame_inner {
+  /* border: 3px solid #33333350; */
+  border-width: 3px;
+  padding: calc(var(--frame_width) - 2px);
+}
+
+/* onClickEvent */
+.frame_outer.onClickEvent {
+  cursor: pointer;
+}
+
+/* flat */
+.frame_outer.flat > .frame_inner {
+  box-shadow:
+    inset #000000b0 calc(var(--frame_width) * -2) calc(var(--frame_width) * -2) calc(var(--frame_width) * 2) calc(var(--frame_width) * -3.5),
+    inset #ffffffb0 calc(var(--frame_width) *  2) calc(var(--frame_width) *  2) calc(var(--frame_width) * 2) calc(var(--frame_width) * -3.5);
+}
+.frame_outer.flat:hover > .frame_inner {
+  box-shadow:
+    inset #000000b0 calc(var(--frame_width) * -2) calc(var(--frame_width) * -2) calc(var(--frame_width) * 2) calc(var(--frame_width) * -3.5),
+    inset #ffffffb0 calc(var(--frame_width) *  2) calc(var(--frame_width) *  2) calc(var(--frame_width) * 2) calc(var(--frame_width) * -3.5);
+  border-width: 1px;
+  padding: var(--frame_width);
+}
+
+/* fullwidth */
+.frame_outer.fullwidth {
+  width: 100%;
+}
+  

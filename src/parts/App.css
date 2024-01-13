@@ -1,0 +1,24 @@
+.App {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.App_header,
+.App_aside,
+.App_main {
+  margin-bottom: 0.5rem;
+}
+
+.App_header {
+  flex-shrink: 0;
+}
+.App_aside {
+  flex-shrink: 0;
+}
+.App_main {
+  flex-grow: 1;
+}
+.App_footer {
+  flex-shrink: 0;
+}

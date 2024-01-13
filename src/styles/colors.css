@@ -1,0 +1,11 @@
+:root {
+  --background: #161e2c;
+  --background-lighter: #26334b;
+
+  
+  --fontColor: #a7a7a7;
+  --fontColor_light: #a7a7a770;
+  --fontColor_disabled: #a7a7a720;
+
+  --border: #455e88;
+}
