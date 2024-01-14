@@ -1,13 +1,17 @@
+import { useEffect, useState } from "react";
+
 import { useItemsContext } from "../../../services/contexts/ItemsContext";
 import { useTimerContext } from "../../../services/contexts/TimerContext";
+import { useWalletContext } from "../../../services/contexts/WalletContext";
 
 import Frame from "../../../components/generic/Frame";
 
-import "./itemBox.css";
+import Chart from "./Chart";
+
 import Button from "../../../components/Button";
-import { useWalletContext } from "../../../services/contexts/WalletContext";
-import { useEffect, useState } from "react";
-import configData from "../../../data/config";
+
+import "./itemBox.css";
+
 
 const ItemBox = ({ id }: { id: number }) => {
 
@@ -41,6 +45,7 @@ const ItemBox = ({ id }: { id: number }) => {
       setQuantityOwned(Item.getQuantityOwned());
 
     }
+    // eslint-disable-next-line
   }, [update])
 
   return (
@@ -61,7 +66,7 @@ const ItemBox = ({ id }: { id: number }) => {
           <img className="item_image" src={Item!.getImage()} />
         </div>
         <div className="item_chart">
-          {/* {chartValues} */}
+          <Chart chartValues={chartValues!} round={(isTimerRunning)?round:chartValues!.length-1} />
         </div>
         <div className="item_worker"></div>
 
