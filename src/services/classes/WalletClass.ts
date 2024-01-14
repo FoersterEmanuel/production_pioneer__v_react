@@ -17,10 +17,18 @@ export default class WalletClass {
   };
 
   public getCoins = (): number => this.coins;
+
+  public addCoins = (val: number): boolean => {
+    if (this.coins + val < 0 ) return false;
+    this.coins += val;
+    this.update();
+    return true;
+  }
+
   public getIncrementValue = (): number => this.incrementValue;
 
-  public setIncrementValue = (val: number): void => { 
-    this.incrementValue = val; 
+  public setIncrementValue = (val: number): void => {
+    this.incrementValue = val;
     this.update();
   };
 };

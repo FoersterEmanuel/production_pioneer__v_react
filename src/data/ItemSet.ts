@@ -39,7 +39,7 @@ export const ItemSet: ItemType[] = [
     name: "Wooden Plank",
     image: Images.wood_plank,
     stDev: 0.05,
-    startValue: 300,
+    startValue: 400,
     workerCost: 500,
     production: {
       produce: 4,
@@ -54,7 +54,7 @@ export const ItemSet: ItemType[] = [
     name: "Wooden Board",
     image: Images.wood_plank,
     stDev: 0.05,
-    startValue: 400,
+    startValue: 800,
     workerCost: 1,
     production: {
       produce: 1,
@@ -69,7 +69,7 @@ export const ItemSet: ItemType[] = [
     name: "Wooden Table",
     image: Images.wood_plank,
     stDev: 0.05,
-    startValue: 500,
+    startValue: 1600,
     workerCost: 1,
     production: {
       produce: 1,
@@ -80,20 +80,5 @@ export const ItemSet: ItemType[] = [
         { id: 1000, need: 1, },
       ],
     }
-  },
-  {
-    id: 600,
-    name: "Wood Placeholder1",
-    image: Images.wood_plank,
-    stDev: 0.05,
-    startValue: 600,
-    workerCost: 1,
-    production: {
-      produce: 1,
-      requiredRounds: 2,
-      parents: [
-        { id: 1000, need: 1, },
-      ],
-    },
   }
 ];

@@ -16,6 +16,9 @@ export default class Items {
     const itemsList = this.items.filter(item => item.getId() === id);
     if(itemsList.length === 1) return itemsList[0];
     return null;
+  };
+  public reset = () =>{
+    this.items = ItemSet.map(item=>new ItemClass(item));
   }
 };
 

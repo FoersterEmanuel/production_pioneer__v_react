@@ -5,11 +5,13 @@ import ItemsClass from "../classes/ItemsClass";
 
 type ItemsContextProps = {
   getItemById: (id: number) => ItemClass | null,
-  getAllItems: () => ItemClass[]
+  getAllItems: () => ItemClass[],
+  reset: () => void
 };
 const ItemContextInit: ItemsContextProps = {
   getItemById: () => null,
-  getAllItems: () => { return [] }
+  getAllItems: () => { return [] },
+  reset: () => { }
 }
 const ItemsContext = createContext(ItemContextInit);
 
@@ -23,7 +25,7 @@ export const ItemsProvider = ({ children }: ItemProps) => {
 
   const items = new ItemsClass(() => { setUpdate(Math.random()) });
 
-  const getItemById = (id:number): ItemClass | null => {
+  const getItemById = (id: number): ItemClass | null => {
     return items.findId(id);
   };
 
@@ -35,6 +37,7 @@ export const ItemsProvider = ({ children }: ItemProps) => {
     <ItemsContext.Provider value={{
       getItemById,
       getAllItems: items.getAllItems,
+      reset: items.reset,
     }}>
       {children}
     </ItemsContext.Provider>

@@ -17,10 +17,11 @@ const ItemBox = ({ id }: { id: number }) => {
 
   const { getItemById } = useItemsContext();
   const { isTimerRunning, round } = useTimerContext();
-  const { incrementValue } = useWalletContext();
+  const { coins, addCoins, incrementValue } = useWalletContext();
 
   const [update, setUpdate] = useState(0);
   const [quantityOwned, setQuantityOwned] = useState(0);
+  const [canBuy, setCanBuy] = useState(true);
 
   const Item = getItemById(id);
   const chartValues = Item?.getChartValues();
@@ -35,7 +36,10 @@ const ItemBox = ({ id }: { id: number }) => {
     }
   };
   const buyQuantity = (val: number) => {
-    changeQuantity(val);
+    console.log(val * chartValues![round] * -1)
+    if (addCoins(val * chartValues![round] * -1)) {
+      changeQuantity(val);
+    }
   }
   const addQuantity = () => { buyQuantity(incrementValue) };
   const subQuantity = () => { buyQuantity(incrementValue * -1) };
@@ -43,10 +47,10 @@ const ItemBox = ({ id }: { id: number }) => {
   useEffect(() => {
     if (Item !== null) {
       setQuantityOwned(Item.getQuantityOwned());
-
+      setCanBuy(incrementValue * chartValues![round] <= coins)
     }
     // eslint-disable-next-line
-  }, [update])
+  }, [update, round])
 
   return (
     <Frame flat>
@@ -56,17 +60,17 @@ const ItemBox = ({ id }: { id: number }) => {
             <div className="item_name">{Item!.getName()}</div>
             <div className="item_quantity">
               <div>{quantityOwned}</div>
-              <div>{chartValues![(isTimerRunning)?round:chartValues!.length-1]}</div>
+              <div>{chartValues![(isTimerRunning) ? round : chartValues!.length - 1]}</div>
               <div className="item_quantityButton">
-                <Button onClick={subQuantity} small>- {incrementValue}</Button>
-                <Button onClick={addQuantity} small>+ {incrementValue}</Button>
+                <Button onClick={subQuantity} small disabled={(incrementValue > quantityOwned) || !isTimerRunning}>- {incrementValue}</Button>
+                <Button onClick={addQuantity} disabled={!canBuy || !isTimerRunning} small>+ {incrementValue}</Button>
               </div>
             </div>
           </div>
-          <img className="item_image" src={Item!.getImage()} />
+          <img className="item_image" src={Item!.getImage()} alt={Item!.getImage()} />
         </div>
         <div className="item_chart">
-          <Chart chartValues={chartValues!} round={(isTimerRunning)?round:chartValues!.length-1} />
+          <Chart chartValues={chartValues!} round={(isTimerRunning) ? round : chartValues!.length - 1} />
         </div>
         <div className="item_worker"></div>
 

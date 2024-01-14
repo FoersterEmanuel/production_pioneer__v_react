@@ -50,7 +50,7 @@ const Chart = ({ chartValues, round }: { chartValues: number[]; round: number; }
 
   return (
     <>
-      <canvas ref={canvasRef} />
+      <canvas className="item_chart" ref={canvasRef} />
     </>
   );
 };

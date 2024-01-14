@@ -1,3 +1,4 @@
+import { useItemsContext } from '../../services/contexts/ItemsContext';
 import { useTimerContext } from '../../services/contexts/TimerContext';
 import { useWalletContext } from '../../services/contexts/WalletContext';
 
@@ -11,7 +12,8 @@ import './header.css';
 
 const Header = () => {
 
-  const { start: timerStart, reset, isTimerRunning, roundNormalized, roundStepNormalized } = useTimerContext();
+  const { start: timerStart, reset:timerReset, isTimerRunning, roundNormalized, roundStepNormalized } = useTimerContext();
+  const {reset: itemsReset} = useItemsContext();
   const { coins, start: walletStart } = useWalletContext();
 
   const Logo = <img src={Images.logo} alt="logo" className="header_logo" />;
@@ -21,7 +23,8 @@ const Header = () => {
     walletStart();
   };
   const resetEvent = () => {
-    reset();
+    timerReset();
+    itemsReset();
     walletStart();
   };
 

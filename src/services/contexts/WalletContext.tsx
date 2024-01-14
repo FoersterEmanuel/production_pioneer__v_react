@@ -5,12 +5,14 @@ import WalletClass from "../classes/WalletClass";
 type WalletContextProps = {
   start: () => void;
   setIncrementValue: (val: number) => void;
+  addCoins: (val:number)=>boolean;
   coins: number;
   incrementValue: number;
 };
 const walletContextInit: WalletContextProps = {
   start: () => { },
   setIncrementValue: ()=>{},
+  addCoins: (val)=>false,
   coins: 0,
   incrementValue: 0,
 }
@@ -39,6 +41,7 @@ export const WalletProvider = ({ children }: WalletProps) => {
     <WalletContext.Provider value={{
       start: wallet.reset,
       setIncrementValue: wallet.setIncrementValue,
+      addCoins: wallet.addCoins,
       coins,
       incrementValue
     }}>
