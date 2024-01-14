@@ -1,33 +1,32 @@
-import { useEffect, useState } from 'react';
+import { ReactNode, useEffect, useState } from "react";
 
-import './frame.css';
+import Frame from "./generic/Frame";
 
-interface FrameProps {
-  children: React.ReactNode;
-  onClick?: () => void;
+import "./button.css";
+
+interface ButtonProps {
+  children: ReactNode;
+  onClick: () => void;
   disabled?: boolean;
-  flat?: boolean;
-  fullwidth?: boolean;
-  small?: boolean;
   smallH?: boolean;
   smallW?: boolean;
+  small?: boolean;
 }
 
-const Frame = ({
+const Button = ({
   children,
   onClick,
-  disabled, fullwidth, flat, small, smallH, smallW
-}: FrameProps) => {
+  disabled, small, smallH, smallW
+}: ButtonProps) => {
 
   const [classesAddOn, setClassesAddOn] = useState("");
   const [onClickEvent, setOnClickEvent] = useState<undefined | (() => void)>(undefined);
+
 
   useEffect(() => {
     setClassesAddOn(() => {
       let newClassesAddOn = "";
       if (!!disabled) newClassesAddOn += " disabled";
-      if (!!flat) newClassesAddOn += " flat";
-      if (!!fullwidth) newClassesAddOn += " fullwidth";
       if (!!small) newClassesAddOn += " smallH smallW";
       if (!!smallH) newClassesAddOn += " smallH";
       if (!!smallW) newClassesAddOn += " smallW";
@@ -39,15 +38,16 @@ const Frame = ({
         return onClick;
       return undefined;
     })
-  }, [disabled, flat, fullwidth, onClick, small, smallH, smallW]);
+  }, [disabled, onClick, small, smallH, smallW]);
 
   return (
-    <div className={`frame_outer${classesAddOn}`} onClick={onClickEvent}>
-      <div className="frame_inner">
-        {children}
-      </div>
-    </div>
+    <Frame onClick={onClickEvent} disabled={!!disabled} smallH={!!smallH} smallW={!!smallW} small={!!small}>
+      <span className={`button${classesAddOn}`}
+        >
+          {children}
+        </span>
+    </Frame>
   );
 };
 
-export default Frame;
+export default Button;

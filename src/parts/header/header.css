@@ -1,0 +1,21 @@
+.header_container {
+  display: flex;
+}
+
+.header_logo{
+  flex-shrink: 0;
+  height: 150px;
+  aspect-ratio: 4/3;
+}
+
+.header_main {
+  display: flex;
+  flex-grow: 1;
+  margin: 0 1rem;
+}
+.header_main_info {
+  flex-grow: 1;
+}
+.header_main_button {
+  flex-shrink: 0;
+}

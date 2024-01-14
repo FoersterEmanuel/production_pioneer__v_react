@@ -1,0 +1,7 @@
+.loadingBar_beam{
+  background-color: #ffffff30;
+  height: var(--frame_width);
+  width: 50%;
+  min-width: 1px;
+  border-radius: calc(0.2rem);
+}

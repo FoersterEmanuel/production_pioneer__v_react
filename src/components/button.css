@@ -1,0 +1,31 @@
+.button {
+  display: flex;
+  width: 100%;
+  justify-content: center;
+  align-items: center;
+  color: var(--fontColor);
+  font-size: 1rem;
+  text-shadow:
+  1px 1px 2px black,
+  -1px -1px 2px white;
+  cursor: pointer;
+}
+*:not(.disabled):hover > * > .button {
+  text-shadow:
+  1px 1px 3px black,
+  -1px -1px 3px white;
+}
+
+/* disabled */
+*.disabled>*>.button {
+  cursor: default;
+  text-shadow:
+  1px 1px 2px black,
+  -1px -1px 2px white;
+  color: var(--fontColorDisabled);
+}
+
+/* smallH (height) */
+.button.smallH {
+  font-size: 0.7rem;
+}

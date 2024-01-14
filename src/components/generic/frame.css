@@ -17,10 +17,9 @@
   height: 100%;
   width: 100%;
   border: 1px solid #33333350;
-  border-width: 1px;
   padding: calc(1rem);
   background-color: var(--background);
-  border-radius: calc(var(--width) * 0.5);
+  border-radius: calc(var(--frame_width) * 0.5);
   box-shadow:
     inset #000000b0 calc(var(--frame_width) * -2) calc(var(--frame_width) * -2) calc(var(--frame_width) * 4) calc(var(--frame_width) * -4),
     inset #ffffffb0 calc(var(--frame_width) *  2) calc(var(--frame_width) *  2) calc(var(--frame_width) * 4) calc(var(--frame_width) * -4);
@@ -34,6 +33,20 @@
 /* onClickEvent */
 .frame_outer.onClickEvent {
   cursor: pointer;
+}
+
+/*disabled*/
+.frame_outer.disabled > .frame_inner {
+  box-shadow:
+    inset #000000b0 calc(var(--frame_width) * -2) calc(var(--frame_width) * -2) calc(var(--frame_width) * 2) calc(var(--frame_width) * -3.5),
+    inset #ffffffb0 calc(var(--frame_width) *  2) calc(var(--frame_width) *  2) calc(var(--frame_width) * 2) calc(var(--frame_width) * -3.5);
+}
+.frame_outer.disabled:hover > .frame_inner {
+  box-shadow:
+    inset #000000b0 calc(var(--frame_width) * -2) calc(var(--frame_width) * -2) calc(var(--frame_width) * 2) calc(var(--frame_width) * -3.5),
+    inset #ffffffb0 calc(var(--frame_width) *  2) calc(var(--frame_width) *  2) calc(var(--frame_width) * 2) calc(var(--frame_width) * -3.5);
+    border-width: 1px;
+  padding: var(--frame_width);
 }
 
 /* flat */
@@ -53,5 +66,42 @@
 /* fullwidth */
 .frame_outer.fullwidth {
   width: 100%;
+  margin: 0;
 }
-  
+
+/* small */
+.frame_outer.smallH,
+.frame_outer.smallW {
+  padding: calc(var(--frame_width) * 0.2);
+}
+/* smallH (height) */
+.frame_outer.smallH > .frame_inner {
+  padding-top: calc(var(--frame_width) * 0.3);
+  padding-bottom: calc(var(--frame_width) * 0.3);
+}
+.frame_outer.smallH:hover > .frame_inner {
+  padding-top: calc(var(--frame_width) * 0.3 - 2px);
+  padding-bottom: calc(var(--frame_width) * 0.3 - 2px);
+}
+.frame_outer.smallH.flat:hover > .frame_inner,
+.frame_outer.smallH.disabled:hover > .frame_inner {
+  padding-top: calc(var(--frame_width) * 0.3);
+  padding-bottom: calc(var(--frame_width) * 0.3);
+}
+/* smallW (width) */
+.frame_outer.smallW {
+  padding: calc(var(--frame_width) * 0.2);
+}
+.frame_outer.smallW > .frame_inner {
+  padding-left: calc(var(--frame_width) * 0.5);
+  padding-right: calc(var(--frame_width) * 0.5);
+}
+.frame_outer.smallW:hover > .frame_inner {
+  padding-left: calc(var(--frame_width) * 0.5 - 2px);
+  padding-right: calc(var(--frame_width) * 0.5 - 2px);
+}
+.frame_outer.smallW.flat:hover > .frame_inner,
+.frame_outer.smallW.disabled:hover > .frame_inner {
+  padding-left: calc(var(--frame_width) * 0.5);
+  padding-right: calc(var(--frame_width) * 0.5);
+}

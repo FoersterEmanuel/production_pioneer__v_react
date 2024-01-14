@@ -1,0 +1,7 @@
+.incrementSelectors {
+  display: flex;
+  flex-shrink: 0;
+  width: 25%;
+  margin: auto;
+  justify-content: space-around;
+}
