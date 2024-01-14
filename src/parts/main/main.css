@@ -1,0 +1,8 @@
+.main_container {
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+}
+.main_container > * {
+  flex: 0 1 calc(100% / 3 - 10px);
+}

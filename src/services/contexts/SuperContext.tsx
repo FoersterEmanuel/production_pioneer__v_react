@@ -1,3 +1,4 @@
+import { ItemsProvider } from "./ItemsContext";
 import { TimerProvider } from "./TimerContext";
 import { WalletProvider } from "./WalletContext";
 
@@ -9,7 +10,9 @@ const SuperProvider = ({ children }: SuperProviderProps) => {
   return (
     <TimerProvider>
       <WalletProvider>
+        <ItemsProvider>
         {children}
+        </ItemsProvider>
       </WalletProvider>
     </TimerProvider>
   );

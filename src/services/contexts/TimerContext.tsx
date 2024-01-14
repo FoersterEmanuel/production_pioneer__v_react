@@ -40,8 +40,8 @@ export const TimerProvider = ({ children }: TimerProps) => {
   const [timer] = useState<TimerClass>(new TimerClass(maxTime, () => { setUpdate(Math.random()) }));
 
   const restTime = () => maxTime - timer.getRemainingTime();
-  const calcRoundStep = () => Math.round(restTime() % configData.timePerStep);
-  const calcRound = () => Math.trunc(restTime() / configData.timePerStep);
+  const calcRound = () => Math.ceil(restTime() / configData.timePerStep);
+  const calcRoundStep = () => restTime() % configData.timePerStep;
   const calcRoundNormalized = () => calcRound() / configData.steps;
   const calcRoundStepNormalized = () => calcRoundStep() / configData.timePerStep
 

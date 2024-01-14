@@ -1,80 +1,24 @@
-
-import { useTimerContext } from '../../services/contexts/TimerContext';
+import { useItemsContext } from '../../services/contexts/ItemsContext';
 
 import ScrollBox from '../../components/generic/ScrollBox';
+
+import ItemBox from './itemBox/ItemBox';
 
 import './main.css';
 
 const Main = () => {
 
-  const { isTimerRunning, round } = useTimerContext();
+  const { getAllItems } = useItemsContext();
 
   return (
     <ScrollBox>
-      Main <br />
-      Main <br />
-      Main <br />
-      Main <br />
-      Main <br />
-      Main <br />
-      Main <br />
-      Main <br />
-      Main <br />
-      Main <br />
-      Main <br />
-      Main <br />
-      Main <br />
-      Main <br />
-      Main <br />
-      Main <br />
-      Main <br />
-      Main <br />
-      Main <br />
-      Main <br />
-      Main <br />
-      Main <br />
-      Main <br />
-      Main <br />
-      Main <br />
-      Main <br />
-      Main <br />
-      Main <br />
-      Main <br />
-      Main <br />
-      Main <br />
-      Main <br />
-      Main <br />
-      Main <br />
-      Main <br />
-      Main <br />
-      Main <br />
-      Main <br />
-      Main <br />
-      Main <br />
-      Main <br />
-      Main <br />
-      Main <br />
-      Main <br />
-      Main <br />
-      Main <br />
-      Main <br />
-      Main <br />
-      Main <br />
-      Main <br />
-      Main <br />
-      Main <br />
-      Main <br />
-      Main <br />
-      Main <br />
-      Main <br />
-      Main <br />
-      Main <br />
-      Main <br />
-      Main <br />
-      Main <br />
-      Main <br />
-      {round}
-      {isTimerRunning ? "on" : "off"}
+      <div className="main_container">
+        {
+          getAllItems().map((item, key) => {
+            return (<ItemBox key={key} id={item.getId()} />);
+          })
+        }
+      </div>
     </ScrollBox>
   );
 };
