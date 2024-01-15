@@ -13,7 +13,7 @@ export const ItemSet: ItemType[] = [
     workerCost: 80,
     production: {
       produce: 1,
-      requiredRounds: 2,
+      requiredRounds: 3,
       parents: "root",
     }
   },
@@ -23,7 +23,7 @@ export const ItemSet: ItemType[] = [
     image: Images.wood_beam,
     stDev: 0.05,
     startValue: 200,
-    workerCost: 200,
+    workerCost: 120,
     production: {
       produce: 1,
       requiredRounds: 2,
@@ -75,7 +75,6 @@ export const ItemSet: ItemType[] = [
       parents: [
         { id: 200, need: 2, },
         { id: 400, need: 1, },
-        { id: 1000, need: 1, },
       ],
     }
   }

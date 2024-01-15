@@ -7,7 +7,6 @@ const Chart = ({ chartValues, round }: { chartValues: number[]; round: number; }
 
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const padding = configData.chartPadding;
-  const numSteps = configData.steps;
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -33,7 +32,7 @@ const Chart = ({ chartValues, round }: { chartValues: number[]; round: number; }
       // draw chart
       ctx.beginPath();
 
-      const currentRound = Math.max(round, 10);
+      const currentRound = Math.max(round+1, 10);
 
       // calc x helpers
       const stepX = (size.w - padding * 2) / currentRound;

@@ -12,6 +12,8 @@ import Chart from "./Chart";
 import Images from "../../../assets/images/Images";
 
 import "./itemBox.css";
+import LoadingBar from "../../../components/LoadingBar";
+import ItemClass, { Parents, Production } from "../../../services/classes/ItemClass";
 
 
 const ItemBox = ({ id }: { id: number }) => {
@@ -24,10 +26,22 @@ const ItemBox = ({ id }: { id: number }) => {
   const [quantityOwned, setQuantityOwned] = useState(0);
   const [worker, setWoker] = useState(0);
   const [canBuy, setCanBuy] = useState(true);
+  const [workflowRun, setWorkflowRun] = useState(false);
+  const [workflowStart, setWorkflowStart] = useState(0);
+  const [workflowStartWorker, setWorkflowStartWorker] = useState(0);
+
   // local vars
   const item = getItemById(id);
   const chartValues = item?.getChartValues();
-  const parents = [];
+  const parents = ((parents) => {
+    if (parents === "root") return "root";
+    return parents.map(parent => {
+      return {
+        ...parent,
+        item: getItemById(parent.id)
+      }
+    });
+  })(item!.getProduction().parents);
 
   const doUpdate = () => {
     setUpdate(Math.random());
@@ -35,12 +49,9 @@ const ItemBox = ({ id }: { id: number }) => {
 
   // item quantity
   const changeQuantity = (val: number) => {
-    if (item !== null) {
-      if (item.addQuantityOwned(val)) doUpdate();
-    }
+      if (item!.addQuantityOwned(val)) doUpdate();
   };
   const buyQuantity = (val: number) => {
-    console.log(val * chartValues![round] * -1)
     if (addCoins(val * chartValues![round] * -1)) {
       changeQuantity(val);
     }
@@ -50,21 +61,44 @@ const ItemBox = ({ id }: { id: number }) => {
 
   // worker quantity
   const changeWorker = (val: number) => {
-    if (item !== null) {
-      if (item.addWorker(val)) doUpdate();
-    }
+      if (item!.addWorker(val)) doUpdate();
   };
   const addWorker = () => { changeWorker(incrementValue) };
   const subWorker = () => { changeWorker(incrementValue * -1) };
 
-  useEffect(() => {
-    if (item !== null) {
-      setQuantityOwned(item.getQuantityOwned());
-      setWoker(item.getWorker())
-      setCanBuy(incrementValue * chartValues![round] <= coins)
+  const doWorkflow = () => {
+    if (isTimerRunning && worker > 0) {
+      if (!workflowRun) {
+        const coinsCheck = worker * item!.getWorkerCost() <= coins;
+        const isRoot = parents === "root";
+        const rootQuantityCheck = isRoot || parents.reduce((acc, parent) => {
+          if (!acc) return false;
+          return parent.need * worker <= parent.item!.getQuantityOwned()
+        }, true);
+        if (coinsCheck && rootQuantityCheck) {
+          setWorkflowRun(true);
+          setWorkflowStart(round);
+          setWorkflowStartWorker(worker);
+          addCoins(worker * item!.getWorkerCost() * -1);
+          if(parents!=="root")
+            parents.forEach((parent) => {parent.item!.addQuantityOwned(parent.need * worker * -1);});
+        }
+      }else if((round - workflowStart)>=item!.getProduction().requiredRounds) {
+        setWorkflowRun(false);
+        item!.addQuantityOwned(item!.getProduction().produce * workflowStartWorker)
+
+      }
     }
+  }
+
+  useEffect(() => {
+      setQuantityOwned(item!.getQuantityOwned());
+      setWoker(item!.getWorker())
+      setCanBuy(incrementValue * chartValues![round] <= coins);
+
+      doWorkflow();
     // eslint-disable-next-line
-  }, [update, round])
+  }, [update, round]);
 
   return (
     <Frame flat>
@@ -76,7 +110,7 @@ const ItemBox = ({ id }: { id: number }) => {
               <div>owned: {quantityOwned}</div>
               <div>{chartValues![(isTimerRunning) ? round : chartValues!.length - 1]} coins</div>
               <div className="item_quantityButton">
-                <Button onClick={subQuantity} small disabled={(incrementValue > quantityOwned) || !isTimerRunning}>- {incrementValue}</Button>
+                <Button onClick={subQuantity} disabled={(incrementValue > quantityOwned) || !isTimerRunning} small >- {incrementValue}</Button>
                 <Button onClick={addQuantity} disabled={!canBuy || !isTimerRunning} small>+ {incrementValue}</Button>
               </div>
             </div>
@@ -88,17 +122,71 @@ const ItemBox = ({ id }: { id: number }) => {
         </div>
         <section className="item_production">
           <img src={Images.wood_worker} className="item_workerImage" alt="worker" />
-          <div className="item_worker">
-            <div className="item_workerQuantity">
-              worker: {worker}
+          <div className="item_info">
+            <div className="item_header">
+              <div className="item_worker">
+                <div className="item_workerQuantity">
+                  worker: {worker}
+                </div>
+                <div className="item_workerCost">
+                  cost per worker: {item!.getWorkerCost()}<br />
+                  cost: <span className={(worker > 0 && (worker * item!.getWorkerCost()) > coins) ? "item_production_noWork" : ""}>{worker * item!.getWorkerCost()}</span>
+                </div>
+                <div className="item_workerQuantityButton">
+                  <Button onClick={subWorker} disabled={(incrementValue > worker) || !isTimerRunning} small>- {incrementValue}</Button>
+                  <Button onClick={addWorker} disabled={!isTimerRunning} small>+ {incrementValue}</Button>
+                </div>
+              </div>
             </div>
-            <div className="item_workerCost">
-              cost/per: {item!.getWorkerCost()}<br/>
-              cost: {worker * item!.getWorkerCost()}
+            <div className="item_workflow">
+              produced per worker: {item!.getProduction().produce}<br />
+              produced: {item!.getProduction().produce * worker}<br />
+              required rounds: {item!.getProduction().requiredRounds}<br />
+
+              {
+                (worker === 0)
+                  ?
+                  <>no worker</>
+                  : (!workflowRun) ?
+                    <>can`t work</>
+                    :
+                    <LoadingBar value={(round - workflowStart) / item!.getProduction().requiredRounds} />
+              }
+
             </div>
-            <div className="item_workerQuantityButton">
-              <Button onClick={subWorker} disabled={(incrementValue > worker) || !isTimerRunning} small>- {incrementValue}</Button>
-              <Button onClick={addWorker} disabled={!isTimerRunning}  small>+ {incrementValue}</Button>
+            <div className="item_parents">
+              {
+                (parents === "root")
+                  ?
+                  <div>need nothings</div>
+                  :
+                  <table className="item_parentsTable">
+                    <thead>
+                      <tr>
+                        <th>name</th>
+                        <th>needs /<br /> worker</th>
+                        <th>needs</th>
+                        <th>quantity owned</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {parents.map((parent, key) => (
+                        <tr key={key}>
+                          <td>
+                            <span className={(worker > 0 && parent.need * worker > parent.item!.getQuantityOwned()) ? "item_production_noWork" : ""}>
+                              {parent.item!.getName()}
+                            </span>
+                          </td>
+                          <td>{parent.need}</td>
+                          <td>{parent.need * worker}</td>
+                          <td>{parent.item!.getQuantityOwned()}</td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+
+
+              }
             </div>
           </div>
         </section>

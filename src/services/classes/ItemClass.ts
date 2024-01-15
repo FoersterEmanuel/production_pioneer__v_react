@@ -1,6 +1,14 @@
 import configData from "../../data/config";
 import { boxMullerTransform } from "../BoxMullerTransform";
-
+export type Parents = {
+  id: number;
+  need: number;
+};
+export type Production = {
+  produce: number;
+  requiredRounds: number;
+  parents: "root" | Parents[]
+};
 export interface ItemType {
   id: number;
   name: string;
@@ -8,15 +16,8 @@ export interface ItemType {
   stDev: number;
   startValue: number;
   workerCost: number;
-  production: {
-    produce: number;
-    requiredRounds: number;
-    parents: "root" | {
-      id: number;
-      need: number;
-    }[]
-  };
-}
+  production: Production;
+};
 
 export default class Item {
 
@@ -44,6 +45,7 @@ export default class Item {
   public getQuantityOwned = (): number => this.quantityOwned;
   public getWorker = (): number => this.worker;
   public getWorkerCost = (): number => this.itemProps.workerCost;
+  public getProduction = (): Production => this.itemProps.production;
   public getChartValues = (): number[] => this.chartValues;
 
   public addQuantityOwned = (val: number): boolean => {
