@@ -21,7 +21,7 @@ export default class Item {
   }
   private clear = () => {
     this.chartValues = [];
-    this.chartValues = new Array(configData.steps + 1).fill(0).reduce(acc => {
+    this.chartValues = new Array(configData.steps).fill(0).reduce(acc => {
       const last = acc[acc.length - 1];
       const next = last * boxMullerTransform(1, this.itemProps.stDev);
       return [...acc, next];

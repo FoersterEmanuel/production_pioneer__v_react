@@ -59,8 +59,8 @@ const ItemBox = ({ id }: { id: number }) => {
           <div className="item_info">
             <div className="item_name">{Item!.getName()}</div>
             <div className="item_quantity">
-              <div>{quantityOwned}</div>
-              <div>{chartValues![(isTimerRunning) ? round : chartValues!.length - 1]}</div>
+              <div>owned: {quantityOwned}</div>
+              <div>{chartValues![(isTimerRunning) ? round : chartValues!.length - 1]} coins</div>
               <div className="item_quantityButton">
                 <Button onClick={subQuantity} small disabled={(incrementValue > quantityOwned) || !isTimerRunning}>- {incrementValue}</Button>
                 <Button onClick={addQuantity} disabled={!canBuy || !isTimerRunning} small>+ {incrementValue}</Button>

@@ -1,56 +1,66 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import configData from "../../../data/config";
 
 const Chart = ({ chartValues, round }: { chartValues: number[]; round: number; }) => {
-  
+
+  const [size, setSize] = useState({ w: 0, h: 0 })
+
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const padding = configData.chartPadding;
   const numSteps = configData.steps;
-  
+
   useEffect(() => {
     const canvas = canvasRef.current;
     if (!canvas) return;
     const ctx = canvas.getContext("2d");
     if (!ctx) return;
-    
+
+
     const calcPath = () => {
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
-      
+      ctx.clearRect(0, 0, canvas.clientWidth, canvas.clientHeight);
+
+      setSize({ w: canvas.clientWidth, h: canvas.clientHeight })
+
       ctx.strokeStyle = '#ffffff70';
 
       // draw x and y axes
       ctx.beginPath();
       ctx.moveTo(padding, padding);
-      ctx.lineTo(padding, canvas.height - padding);
-      ctx.lineTo(canvas.width - padding, canvas.height - padding);
+      ctx.lineTo(padding, size.h - padding);
+      ctx.lineTo(size.w - padding, size.h - padding);
       ctx.stroke();
 
       // draw chart
       ctx.beginPath();
-      ctx.moveTo(padding, canvas.height - padding);
-      
-      const stepX = (canvas.width - padding * 2) / (Math.min(Math.max(round, 10), numSteps - 1));
-      const minValue = Math.min(...chartValues.slice(0, Math.min(round+1, numSteps)));
-      const maxValue = Math.max(...chartValues.slice(0, Math.min(round+1, numSteps)));
-      const distanceValue = maxValue - minValue;
-      const stepY = 1 / distanceValue * (canvas.height - padding * 2);
 
+      const currentRound = Math.max(round, 10);
+
+      // calc x helpers
+      const stepX = (size.w - padding * 2) / currentRound;
+
+      // calc y helpers
+      const minValue = Math.min(...chartValues.slice(0, currentRound));
+      const maxValue = Math.max(...chartValues.slice(0, currentRound));
+      const distanceValue = maxValue - minValue;
+      const stepY = (size.h - padding * 2) / distanceValue;
+
+      ctx.moveTo(padding, size.h - ((chartValues[0] - minValue) * stepY + padding));
       chartValues.slice(0, round+1).forEach((value, index) => {
-        const x = index * stepX + padding;
-        const y = canvas.height - ((value - minValue) * stepY + padding);
+        const x = (index) * stepX + padding;
+        const y = size.h - ((value - minValue) * stepY + padding);
         ctx.lineTo(x, y);
       });
-      
+
       ctx.stroke();
     };
-    
+
     calcPath();
     // eslint-disable-next-line
-  },[round]);
+  }, [round, canvasRef.current?.clientWidth]);
 
   return (
     <>
-      <canvas className="item_chart" ref={canvasRef} />
+      <canvas className="item_chart" ref={canvasRef} width={size.w} height={size.h} />
     </>
   );
 };
