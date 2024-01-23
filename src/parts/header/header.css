@@ -2,10 +2,23 @@
   display: flex;
 }
 
-.header_logo{
+.header_logo {
   flex-shrink: 0;
   height: 150px;
   aspect-ratio: 4/3;
+}
+
+
+@media (max-width: 700px) {
+
+  .header_logo:nth-of-type(1) {
+    height: 80px;
+  }
+
+  .header_logo:nth-of-type(2) {
+    display: none;
+  }
+
 }
 
 .header_main {
@@ -13,9 +26,22 @@
   flex-grow: 1;
   margin: 0 1rem;
 }
+
+@media (max-width: 1000px) {
+  .header_main {
+    flex-direction: column;
+  }
+
+  .header_main_button {
+    display: flex;
+    justify-content: flex-end;
+  }
+}
+
 .header_main_info {
   flex-grow: 1;
 }
+
 .header_main_button {
   flex-shrink: 0;
 }
