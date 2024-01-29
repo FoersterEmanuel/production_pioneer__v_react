@@ -6,7 +6,10 @@ import Images from "../assets/images/Images";
 export const ItemSet: ItemType[] = [
   {
     id: 100,
-    name: "Wooden Log",
+    name: {
+      "en": "Wooden Log",
+      "de": "Holzstamm"
+    },
     image: Images.wood_log,
     stDev: 0.05,
     startValue: 100,
@@ -19,7 +22,10 @@ export const ItemSet: ItemType[] = [
   },
   {
     id: 200,
-    name: "Wooden Beam",
+    name: {
+      "en": "Wooden Beam",
+      "de": "Holzbalken"
+    },
     image: Images.wood_beam,
     stDev: 0.05,
     startValue: 200,
@@ -34,7 +40,10 @@ export const ItemSet: ItemType[] = [
   },
   {
     id: 300,
-    name: "Wooden Plank",
+    name: {
+      "en": "Wooden Plank",
+      "de": "Holzbrett"
+    },
     image: Images.wood_plank,
     stDev: 0.05,
     startValue: 400,
@@ -49,7 +58,10 @@ export const ItemSet: ItemType[] = [
   },
   {
     id: 400,
-    name: "Wooden Board",
+    name: {
+      "en": "Wooden Board",
+      "de": "Holzplatte"
+    },
     image: Images.wood_plank,
     stDev: 0.05,
     startValue: 800,
@@ -64,7 +76,10 @@ export const ItemSet: ItemType[] = [
   },
   {
     id: 500,
-    name: "Wooden Table",
+    name: {
+      "en": "Wooden Table",
+      "de": "Holztisch"
+    },
     image: Images.wood_plank,
     stDev: 0.05,
     startValue: 1600,

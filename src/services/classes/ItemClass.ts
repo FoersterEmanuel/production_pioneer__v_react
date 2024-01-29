@@ -1,5 +1,7 @@
 import configData from "../../data/config";
+import { LanguageSet } from "./LanguageClass";
 import { boxMullerTransform } from "../BoxMullerTransform";
+
 export type Parents = {
   id: number;
   need: number;
@@ -11,14 +13,13 @@ export type Production = {
 };
 export interface ItemType {
   id: number;
-  name: string;
+  name:  {[key in LanguageSet]: string};
   image: string;
   stDev: number;
   startValue: number;
   workerCost: number;
   production: Production;
 };
-
 export default class Item {
 
   private quantityOwned: number = 0;
@@ -40,7 +41,7 @@ export default class Item {
   };
 
   public getId = () => this.itemProps.id;
-  public getName = () => this.itemProps.name;
+  public getName = (language:LanguageSet) => this.itemProps.name[language];
   public getImage = () => this.itemProps.image;
   public getQuantityOwned = (): number => this.quantityOwned;
   public getWorker = (): number => this.worker;

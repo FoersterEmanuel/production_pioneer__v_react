@@ -3,17 +3,17 @@ import { useEffect, useState } from "react";
 import { useItemsContext } from "../../../services/contexts/ItemsContext";
 import { useTimerContext } from "../../../services/contexts/TimerContext";
 import { useWalletContext } from "../../../services/contexts/WalletContext";
+import { useLanguageContext } from "../../../services/contexts/LanguageContext";
 
 import Frame from "../../../components/generic/Frame";
 import Button from "../../../components/Button";
+import LoadingBar from "../../../components/LoadingBar";
 
 import Chart from "./Chart";
 
 import Images from "../../../assets/images/Images";
 
 import "./itemBox.css";
-import LoadingBar from "../../../components/LoadingBar";
-import ItemClass, { Parents, Production } from "../../../services/classes/ItemClass";
 
 
 const ItemBox = ({ id }: { id: number }) => {
@@ -21,6 +21,7 @@ const ItemBox = ({ id }: { id: number }) => {
   const { getItemById } = useItemsContext();
   const { isTimerRunning, round } = useTimerContext();
   const { coins, addCoins, incrementValue } = useWalletContext();
+  const { getWord, language } = useLanguageContext();
   // local states
   const [update, setUpdate] = useState(0);
   const [quantityOwned, setQuantityOwned] = useState(0);
@@ -49,7 +50,7 @@ const ItemBox = ({ id }: { id: number }) => {
 
   // item quantity
   const changeQuantity = (val: number) => {
-      if (item!.addQuantityOwned(val)) doUpdate();
+    if (item!.addQuantityOwned(val)) doUpdate();
   };
   const buyQuantity = (val: number) => {
     if (addCoins(val * chartValues![round] * -1)) {
@@ -61,7 +62,7 @@ const ItemBox = ({ id }: { id: number }) => {
 
   // worker quantity
   const changeWorker = (val: number) => {
-      if (item!.addWorker(val)) doUpdate();
+    if (item!.addWorker(val)) doUpdate();
   };
   const addWorker = () => { changeWorker(incrementValue) };
   const subWorker = () => { changeWorker(incrementValue * -1) };
@@ -80,10 +81,10 @@ const ItemBox = ({ id }: { id: number }) => {
           setWorkflowStart(round);
           setWorkflowStartWorker(worker);
           addCoins(worker * item!.getWorkerCost() * -1);
-          if(parents!=="root")
-            parents.forEach((parent) => {parent.item!.addQuantityOwned(parent.need * worker * -1);});
+          if (parents !== "root")
+            parents.forEach((parent) => { parent.item!.addQuantityOwned(parent.need * worker * -1); });
         }
-      }else if((round - workflowStart)>=item!.getProduction().requiredRounds) {
+      } else if ((round - workflowStart) >= item!.getProduction().requiredRounds) {
         setWorkflowRun(false);
         item!.addQuantityOwned(item!.getProduction().produce * workflowStartWorker)
 
@@ -92,11 +93,11 @@ const ItemBox = ({ id }: { id: number }) => {
   }
 
   useEffect(() => {
-      setQuantityOwned(item!.getQuantityOwned());
-      setWoker(item!.getWorker())
-      setCanBuy(incrementValue * chartValues![round] <= coins);
+    setQuantityOwned(item!.getQuantityOwned());
+    setWoker(item!.getWorker())
+    setCanBuy(incrementValue * chartValues![round] <= coins);
 
-      doWorkflow();
+    doWorkflow();
     // eslint-disable-next-line
   }, [update, round]);
 
@@ -105,7 +106,7 @@ const ItemBox = ({ id }: { id: number }) => {
       <article>
         <div className="item_header">
           <div className="item_info">
-            <div className="item_name">{item!.getName()}</div>
+            <div className="item_name">{item!.getName(language)}</div>
             <div className="item_quantity">
               <div>owned: {quantityOwned}</div>
               <div>{chartValues![(isTimerRunning) ? round : chartValues!.length - 1]} coins</div>
@@ -126,11 +127,9 @@ const ItemBox = ({ id }: { id: number }) => {
             <div className="item_header">
               <div className="item_worker">
                 <div className="item_workerQuantity">
-                  worker: {worker}
-                </div>
-                <div className="item_workerCost">
-                  cost per worker: {item!.getWorkerCost()}<br />
-                  cost: <span className={(worker > 0 && (worker * item!.getWorkerCost()) > coins) ? "item_production_noWork" : ""}>{worker * item!.getWorkerCost()}</span>
+                  {getWord("worker")}: {worker}<br />
+                  {getWord("cost_per_worker")}: {item!.getWorkerCost()}<br />
+                  {getWord("cost")}: <span className={(worker > 0 && (worker * item!.getWorkerCost()) > coins) ? "item_production_noWork" : ""}>{worker * item!.getWorkerCost()}</span><br/>
                 </div>
                 <div className="item_workerQuantityButton">
                   <Button onClick={subWorker} disabled={(incrementValue > worker) || !isTimerRunning} small>- {incrementValue}</Button>
@@ -174,7 +173,7 @@ const ItemBox = ({ id }: { id: number }) => {
                         <tr key={key}>
                           <td>
                             <span className={(worker > 0 && parent.need * worker > parent.item!.getQuantityOwned()) ? "item_production_noWork" : ""}>
-                              {parent.item!.getName()}
+                              {parent.item!.getName(language)}
                             </span>
                           </td>
                           <td>{parent.need}</td>

@@ -2,6 +2,9 @@ import { useItemsContext } from '../../services/contexts/ItemsContext';
 import { useTimerContext } from '../../services/contexts/TimerContext';
 import { useWalletContext } from '../../services/contexts/WalletContext';
 
+import { useLanguageContext } from '../../services/contexts/LanguageContext';
+import { LanguageSet, languageSet } from '../../services/classes/LanguageClass';
+
 import Frame from '../../components/generic/Frame';
 import LoadingBar from '../../components/LoadingBar';
 import Button from '../../components/Button';
@@ -12,9 +15,12 @@ import './header.css';
 
 const Header = () => {
 
-  const { start: timerStart, reset:timerReset, isTimerRunning, roundNormalized, roundStepNormalized } = useTimerContext();
-  const {reset: itemsReset} = useItemsContext();
+  const { start: timerStart, reset: timerReset, isTimerRunning, roundNormalized, roundStepNormalized } = useTimerContext();
+  const { reset: itemsReset } = useItemsContext();
   const { coins, start: walletStart } = useWalletContext();
+  const { getWord, changeLanguage, language } = useLanguageContext();
+
+  const supportedLanguages: LanguageSet[] = languageSet;
 
   const Logo = <img src={Images.logo} alt="logo" className="header_logo" />;
 
@@ -35,18 +41,25 @@ const Header = () => {
         {Logo}
         <div className="header_main">
           <div className="header_main_info">
-            <LoadingBar value={roundNormalized} /><br />
-            <LoadingBar value={roundStepNormalized} />
-            Coins: {coins}
+            GameTimer: <LoadingBar value={roundNormalized} /><br />
+            RoundTimer: <LoadingBar value={roundStepNormalized} />
+            {getWord("coins")}: {coins}
           </div>
           <div className="header_main_button">
+            {
+              supportedLanguages.map((currentLanguage) => (
+                <Button key={currentLanguage} onClick={() => { changeLanguage(currentLanguage) }} disabled={currentLanguage === language } small>
+                  {currentLanguage}
+                </Button>
+              ))
+            }
             {(!isTimerRunning) ? (
               <Button onClick={startEvent}>
-                Start
+                {getWord("start")}
               </Button>
             ) : (
               <Button onClick={resetEvent}>
-                Reset
+                {getWord("reset")}
               </Button>
             )}
           </div>

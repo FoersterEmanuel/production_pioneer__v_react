@@ -1,4 +1,5 @@
 import { ItemsProvider } from "./ItemsContext";
+import { LanguageProvider } from "./LanguageContext";
 import { TimerProvider } from "./TimerContext";
 import { WalletProvider } from "./WalletContext";
 
@@ -8,13 +9,15 @@ interface SuperProviderProps {
 
 const SuperProvider = ({ children }: SuperProviderProps) => {
   return (
-    <TimerProvider>
-      <WalletProvider>
-        <ItemsProvider>
-        {children}
-        </ItemsProvider>
-      </WalletProvider>
-    </TimerProvider>
+    <LanguageProvider>
+      <TimerProvider>
+        <WalletProvider>
+          <ItemsProvider>
+            {children}
+          </ItemsProvider>
+        </WalletProvider>
+      </TimerProvider>
+    </LanguageProvider>
   );
 };
 

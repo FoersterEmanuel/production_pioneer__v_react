@@ -6,7 +6,7 @@ export default class WalletClass {
 
   constructor(update: () => void) {
     this.update = update;
-  }
+  }  
 
   private startCoins = configData.startCoins;
   private coins = 0;
