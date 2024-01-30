@@ -12,6 +12,7 @@ import Button from '../../components/Button';
 import Images from '../../assets/images/Images';
 
 import './header.css';
+import PopupButton from '../../components/PopupButton';
 
 const Header = () => {
 
@@ -41,18 +42,23 @@ const Header = () => {
         {Logo}
         <div className="header_main">
           <div className="header_main_info">
-            GameTimer: <LoadingBar value={roundNormalized} /><br />
-            RoundTimer: <LoadingBar value={roundStepNormalized} />
-            {getWord("coins")}: {coins}
-          </div>
-          <div className="header_main_button">
+            {getWord("game_timer")}: 
+            <PopupButton title={"?"}>
+              {getWord("popup_1")}
+            </PopupButton>
             {
               supportedLanguages.map((currentLanguage) => (
-                <Button key={currentLanguage} onClick={() => { changeLanguage(currentLanguage) }} disabled={currentLanguage === language } small>
+                <Button key={currentLanguage} onClick={() => { changeLanguage(currentLanguage) }} disabled={currentLanguage === language} small>
                   {currentLanguage}
                 </Button>
               ))
             }
+            <LoadingBar value={roundNormalized} /><br />
+            {getWord("round_timer")}: 
+            <LoadingBar value={roundStepNormalized} />
+            {getWord("coins")}: {coins}
+          </div>
+          <div className="header_main_button">
             {(!isTimerRunning) ? (
               <Button onClick={startEvent}>
                 {getWord("start")}

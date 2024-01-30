@@ -108,8 +108,8 @@ const ItemBox = ({ id }: { id: number }) => {
           <div className="item_info">
             <div className="item_name">{item!.getName(language)}</div>
             <div className="item_quantity">
-              <div>owned: {quantityOwned}</div>
-              <div>{chartValues![(isTimerRunning) ? round : chartValues!.length - 1]} coins</div>
+              <div>{getWord("owned")}: {quantityOwned}</div>
+              <div>{chartValues![(isTimerRunning) ? round : chartValues!.length - 1]} {getWord("coins")}</div>
               <div className="item_quantityButton">
                 <Button onClick={subQuantity} disabled={(incrementValue > quantityOwned) || !isTimerRunning} small >- {incrementValue}</Button>
                 <Button onClick={addQuantity} disabled={!canBuy || !isTimerRunning} small>+ {incrementValue}</Button>
@@ -129,7 +129,7 @@ const ItemBox = ({ id }: { id: number }) => {
                 <div className="item_workerQuantity">
                   {getWord("worker")}: {worker}<br />
                   {getWord("cost_per_worker")}: {item!.getWorkerCost()}<br />
-                  {getWord("cost")}: <span className={(worker > 0 && (worker * item!.getWorkerCost()) > coins) ? "item_production_noWork" : ""}>{worker * item!.getWorkerCost()}</span><br/>
+                  {getWord("cost")}: <span className={(worker > 0 && (worker * item!.getWorkerCost()) > coins) ? "item_production_noWork" : ""}>{worker * item!.getWorkerCost()}</span><br />
                 </div>
                 <div className="item_workerQuantityButton">
                   <Button onClick={subWorker} disabled={(incrementValue > worker) || !isTimerRunning} small>- {incrementValue}</Button>
@@ -138,16 +138,16 @@ const ItemBox = ({ id }: { id: number }) => {
               </div>
             </div>
             <div className="item_workflow">
-              produced per worker: {item!.getProduction().produce}<br />
-              produced: {item!.getProduction().produce * worker}<br />
-              required rounds: {item!.getProduction().requiredRounds}<br />
+              {getWord("produced_per_worker")}: {item!.getProduction().produce}<br />
+              {getWord("produced")}: {item!.getProduction().produce * worker}<br />
+              {getWord("required_rounds")}: {item!.getProduction().requiredRounds}<br />
 
               {
                 (worker === 0)
                   ?
-                  <>no worker</>
+                  <>{getWord("no_worker")}</>
                   : (!workflowRun) ?
-                    <>can`t work</>
+                    <>{getWord("cant_work")}</>
                     :
                     <LoadingBar value={(round - workflowStart) / item!.getProduction().requiredRounds} />
               }
@@ -157,15 +157,15 @@ const ItemBox = ({ id }: { id: number }) => {
               {
                 (parents === "root")
                   ?
-                  <div>need nothings</div>
+                  <div>{getWord("need_nothings")}</div>
                   :
                   <table className="item_parentsTable">
                     <thead>
                       <tr>
-                        <th>name</th>
-                        <th>needs /<br /> worker</th>
-                        <th>needs</th>
-                        <th>quantity owned</th>
+                        <th>{getWord("materials")}</th>
+                        <th>{getWord("required_per_worker")}</th>
+                        <th>{getWord("required")}</th>
+                        <th>{getWord("owned")}</th>
                       </tr>
                     </thead>
                     <tbody>

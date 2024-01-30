@@ -1,16 +1,16 @@
-import languageData from './../../data/language_data.json';
+import { ReactNode } from 'react';
+import {language_data} from '../../data/language_data';
 
-type Translation = {
+export type LanguageSet = "en" | "de";
+export type Translation = {
   [key: string]: {
-    de: string;
-    en: string;
+    [language in LanguageSet]: string | ReactNode;
   };
 };
-export type LanguageSet = "en" | "de";
 export const languageSet: LanguageSet[] = ["en", "de"];
 
 export default class LanguageClass {
-  private lData: Translation = languageData;
+  private lData: Translation = language_data;
   private language: LanguageSet;
 
   constructor() {
@@ -30,7 +30,7 @@ export default class LanguageClass {
       this.language = val;
     return this.language;
   };
-  public getLanguageWord = (val: string): string | undefined => {
+  public getLanguageWord = (val: string): string | ReactNode | undefined => {
     if (!this.lData[val] || !this.lData[val][this.language])
       return;
     return this.lData[val][this.language];

@@ -1,11 +1,11 @@
-import { createContext, useContext, useEffect, useState } from "react";
+import { ReactNode, createContext, useContext, useEffect, useState } from "react";
 
 import LanguageClass, { LanguageSet } from "../classes/LanguageClass";
 
 type LanguageContextProps = {
   language: LanguageSet;
   changeLanguage: (val: LanguageSet) => void;
-  getWord: (val: string) => string;
+  getWord: (val: string) => string | ReactNode;
 };
 const languageContextInit: LanguageContextProps = {
   language: "en",
@@ -30,7 +30,7 @@ export const LanguageProvider = ({ children, fallbackWord = "undefined" }: Langu
     if (languageClass !== null)
       setLanguage(languageClass.setLanguage(val));
   };
-  const getWord = (val: string): string => {
+  const getWord = (val: string): string | ReactNode => {
     if (languageClass !== null) {
       return languageClass.getLanguageWord(val) || fallbackWord;
     }

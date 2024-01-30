@@ -5,6 +5,8 @@ import './frame.css';
 interface FrameProps {
   children: React.ReactNode;
   onClick?: () => void;
+  onMouseOver?: () => void;
+  onMouseLeave?: () => void;
   disabled?: boolean;
   flat?: boolean;
   fullwidth?: boolean;
@@ -16,11 +18,15 @@ interface FrameProps {
 const Frame = ({
   children,
   onClick,
+  onMouseOver,
+  onMouseLeave,
   disabled, fullwidth, flat, small, smallH, smallW
 }: FrameProps) => {
 
   const [classesAddOn, setClassesAddOn] = useState("");
   const [onClickEvent, setOnClickEvent] = useState<undefined | (() => void)>(undefined);
+  const [onMouseOverEvent, setOnMouseOverEvent] = useState<undefined | (() => void)>(undefined);
+  const [onMouseLeaveEvent, setOnMouseLeaveEvent] = useState<undefined | (() => void)>(undefined);
 
   useEffect(() => {
     setClassesAddOn(() => {
@@ -39,10 +45,20 @@ const Frame = ({
         return onClick;
       return undefined;
     })
-  }, [disabled, flat, fullwidth, onClick, small, smallH, smallW]);
+    setOnMouseOverEvent(() => {
+      if (!!onMouseOver && !disabled)
+        return onMouseOver;
+      return undefined;
+    })
+    setOnMouseLeaveEvent(() => {
+      if (!!onMouseLeave && !disabled)
+        return onMouseLeave;
+      return undefined;
+    })
+  }, [disabled, flat, fullwidth, onClick, onMouseOver,onMouseLeave, small, smallH, smallW]);
 
   return (
-    <div className={`frame_outer${classesAddOn}`} onClick={onClickEvent}>
+    <div className={`frame_outer${classesAddOn}`} onClick={onClickEvent} onMouseOver={onMouseOverEvent} onMouseLeave={onMouseLeaveEvent}>
       <div className="frame_inner">
         {children}
       </div>

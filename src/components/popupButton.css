@@ -1,0 +1,28 @@
+.popup_container {
+  display: inline;
+  position: relative;
+}
+
+.popup_container .frame_inner {
+  font-size: 0.7rem;
+}
+
+.popup_container>.popup_content {
+  position: absolute;
+  white-space: nowrap;
+  top: 0;
+  z-index: 1000;
+}
+
+.popup_container>.popup_content.left {
+  left: 0;
+}
+
+.popup_container>.popup_content.center {
+  left: -50%;
+  right: -50%;
+}
+
+.popup_container>.popup_content.right {
+  right: 0;
+}
